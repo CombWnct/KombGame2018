@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="as_libs_and_outers">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="general">
+      <UniqueIdentifier>{9f445f20-c4d5-4665-adfc-eec200531c7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sample">
+      <UniqueIdentifier>{5eec9f02-5c0f-4671-b606-b9c3aa67da6e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="entry.cpp">
+      <Filter>sample</Filter>
+    </ClCompile>
+    <ClCompile Include="general.cpp">
+      <Filter>general</Filter>
+    </ClCompile>
+    <ClCompile Include="ggTools3.cpp">
+      <Filter>as_libs_and_outers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\local\developerTools\OGLDEV\Include\math_3d.cpp">
+      <Filter>as_libs_and_outers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="general.hpp">
+      <Filter>general</Filter>
+    </ClInclude>
+    <ClInclude Include="ordve.hpp">
+      <Filter>as_libs_and_outers</Filter>
+    </ClInclude>
+    <ClInclude Include="ggTools3.hpp">
+      <Filter>as_libs_and_outers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="stage.dae" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="stage.png" />
+    <Image Include="graphs\bullet.png" />
+    <Image Include="graphs\chara.png" />
+    <Image Include="stage2.png" />
+    <Image Include="graphs\target.png" />
+    <Image Include="graphs\bomb.png" />
+    <Image Include="graphs\block.png" />
+    <Image Include="graphs\cursor.png" />
+  </ItemGroup>
+</Project>
