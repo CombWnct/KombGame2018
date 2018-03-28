@@ -87,9 +87,9 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\local\developerTools\DxLib_VC\プロジェクトに追加すべきファイル_VC用;C:\local\developerTools\ASSIMP\assimp\assimp\lib;C:\local\developerTools\BULLET\BULLET_PHYSICS\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,9 +109,9 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\local\developerTools\DxLib_VC\プロジェクトに追加すべきファイル_VC用;C:\local\developerTools\ASSIMP\assimp\assimp\lib;C:\local\developerTools\BULLET\BULLET_PHYSICS\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,10 +130,10 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>C:\local\developerTools\DxLib_VC\プロジェクトに追加すべきファイル_VC用;C:\local\developerTools\ASSIMP\assimp\assimp\lib;C:\local\developerTools\BULLET\BULLET_PHYSICS\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -152,10 +152,10 @@
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>C:\local\developerTools\DxLib_VC\プロジェクトに追加すべきファイル_VC用;C:\local\developerTools\ASSIMP\assimp\assimp\lib;C:\local\developerTools\BULLET\BULLET_PHYSICS\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -178,9 +178,13 @@
     <Image Include="graphs\chara.png" />
     <Image Include="graphs\block.png" />
     <Image Include="graphs\cursor.png" />
+    <Image Include="graphs\goal.png" />
     <Image Include="graphs\target.png" />
     <Image Include="stage.png" />
     <Image Include="stage2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="movies\ending.mp4" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

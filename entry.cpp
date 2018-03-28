@@ -19,8 +19,10 @@ namespace sample {
 	const std::string PAGRstage = R"(stage.png)";
 	const std::string PAGRstage2 = R"(stage2.png)";
 
-	const std::string PAGRchara = R"(graphs\chara.png)", PAGRbullet = R"(graphs\bullet.png)", PAGRtarget = R"(graphs\target.png)", PAGRbomb = R"(graphs\bomb.png)", PAGRblock = R"(graphs\block.png)", PAGRcursor = R"(graphs\cursor.png)";
-	int GRchara, GRbullet, GRtarget, GRbomb, GRblock, GRcursor;
+	const std::string PAGRchara = R"(graphs\chara.png)", PAGRbullet = R"(graphs\bullet.png)", PAGRtarget = R"(graphs\target.png)", PAGRbomb = R"(graphs\bomb.png)", PAGRblock = R"(graphs\block.png)", PAGRcursor = R"(graphs\cursor.png)", PAGRgoal = R"(graphs\goal.png)";
+	int GRchara, GRbullet, GRtarget, GRbomb, GRblock, GRcursor, GRgoal;
+	//movie
+	const std::string PAMOVending = R"(movies\ending.mp4)";
 
 	btRigidBody* rigidChara;
 
@@ -39,6 +41,10 @@ namespace sample {
 
 	std::vector<btRigidBody*> bullets;
 	std::vector<btRigidBody*> bombs;//ボム
+
+	//GOAL関係
+	btRigidBody* rigidGoal;
+	constexpr float goalX = 1380, goalY = 300;
 };
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -50,6 +56,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	general::Init();
 	general::CreateTarget();
 	general::CreateBlocks();
+	general::CreateGoal();
 	//マウスカーソルを非表示
 	SetMouseDispFlag(false);
 
@@ -72,9 +79,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		DrawGraph(ball.x() - sample::screenX - 10, sample::winH - ball.y() - 10, sample::GRchara, true);
 		general::CheckBullets();//弾丸を設定
 		general::CheckBombs();//ボムも
+		if (general::CheckGoal())break;//ゴールしているかチェック　描画もここで行う
 		//マウスカーソルを描画
 		general::DrawCursor();
 	}
+
+	PlayMovie(sample::PAMOVending.c_str(), 1, DX_MOVIEPLAYTYPE_NORMAL);
+
+	//GOALを処理しておく
+	sample::domain->removeRigidBody(sample::rigidGoal);
+	delete sample::rigidGoal->getMotionState();
+	delete sample::rigidGoal->getCollisionShape();
+	delete sample::rigidGoal;
 
 	return 0;
 }
@@ -139,6 +155,7 @@ __int8 general::Init() {
 	sample::GRbomb = LoadGraph(sample::PAGRbomb.c_str());
 	sample::GRblock = LoadGraph(sample::PAGRblock.c_str());
 	sample::GRcursor = LoadGraph(sample::PAGRcursor.c_str());
+	sample::GRgoal = LoadGraph(sample::PAGRgoal.c_str());
 	return true;
 }
 __int8 general::InitBullet() {
@@ -514,4 +531,68 @@ __int8 general::DrawCursor() {
 	DrawGraph(x - 25, y - 25, sample::GRcursor, true);
 
 	return true;
+}
+__int8 general::CreateGoal() {
+
+	//とりあえずGOALの形状を作成
+	btCollisionShape* shape = new btBoxShape(btVector3(25, 25, 25));
+	btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), btVector3(sample::goalX, sample::goalY, 0)));
+	btVector3 inertia(0, 0, 0);
+	shape->calculateLocalInertia(0.0, inertia);
+	sample::rigidGoal = new btRigidBody(0.0, motionState, shape, inertia);
+
+	//ドメインに追加
+	sample::domain->addRigidBody(sample::rigidGoal);
+
+	return true;
+
+}
+__int8 general::CheckGoal() {
+
+	//GOALの座標をゲット
+	btVector3 PO3goal = sample::rigidGoal->getCenterOfMassPosition();
+	//描画
+	DrawGraph(PO3goal.x() - sample::screenX - 25, 480 - PO3goal.y() - 25, sample::GRgoal, true);
+
+	//当たり判定
+	for (size_t i = 0; i < sample::domain->getDispatcher()->getNumManifolds(); i++) {
+
+		//当たり判定情報を取得
+		btPersistentManifold* manifold = sample::domain->getDispatcher()->getManifoldByIndexInternal(i);
+
+		//衝突したオブジェクトを取得
+		const btCollisionObject* obj1 = manifold->getBody0();
+		const btCollisionObject* obj2 = manifold->getBody1();
+		//アップキャストする
+		const btRigidBody* rigid1 = btRigidBody::upcast(obj1);
+		const btRigidBody* rigid2 = btRigidBody::upcast(obj2);
+
+		//rigidがキャラもしくはGOALか
+		enum flagbombOrblock { other = 0, actor = 1, goal = -1 };
+		flagbombOrblock FLrigid1 = flagbombOrblock::other, FLrigid2 = flagbombOrblock::other;
+		//インデックスを保存
+		size_t IND1, IND2;
+
+		//弾の判定
+
+		if (sample::rigidChara == rigid1) {//rigid1がアクターならば
+			FLrigid1 = flagbombOrblock::actor;
+		}
+		else if (sample::rigidChara == rigid2) {//rigid2がアクターならば
+			FLrigid2 = flagbombOrblock::actor;
+		}
+
+		//GOALの判定
+		if (sample::rigidGoal == rigid1) {
+			FLrigid1 = flagbombOrblock::goal;
+		}
+		else if (sample::rigidGoal == rigid2) {
+			FLrigid2 = flagbombOrblock::goal;
+		}
+
+		//あたったものが的と弾ならば
+		if (FLrigid1 != FLrigid2 && FLrigid1 != 0 && FLrigid2 != 0)return true;
+
+	}
+	return false;
 }

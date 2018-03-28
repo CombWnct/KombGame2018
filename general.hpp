@@ -20,6 +20,8 @@ namespace general {
 	__int8 CheckBombs();
 	__int8 CalcBomb(int targetX,int targetY,float* ang);//ボム軌道を計算する
 	__int8 DrawCursor();
+	__int8 CreateGoal();//GOALを生成する
+	__int8 CheckGoal();//GOALにあたっているかチェックする
 };
 
 #endif

@@ -49,5 +49,9 @@
     <Image Include="graphs\bomb.png" />
     <Image Include="graphs\block.png" />
     <Image Include="graphs\cursor.png" />
+    <Image Include="graphs\goal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="movies\ending.mp4" />
   </ItemGroup>
 </Project>
