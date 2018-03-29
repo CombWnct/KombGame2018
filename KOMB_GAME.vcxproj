@@ -182,6 +182,7 @@
     <Image Include="graphs\target.png" />
     <Image Include="stage.png" />
     <Image Include="stage2.png" />
+    <Image Include="stage3.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="movies\ending.mp4" />

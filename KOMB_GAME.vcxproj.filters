@@ -50,6 +50,7 @@
     <Image Include="graphs\block.png" />
     <Image Include="graphs\cursor.png" />
     <Image Include="graphs\goal.png" />
+    <Image Include="stage3.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="movies\ending.mp4" />

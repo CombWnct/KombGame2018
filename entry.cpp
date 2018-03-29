@@ -16,8 +16,9 @@ namespace sample {
 	ggTools3::rigidMeshData stageRigid;//モデルの剛体
 	const std::string PAstage = R"(stage.dae)";
 
-	const std::string PAGRstage = R"(stage.png)";
-	const std::string PAGRstage2 = R"(stage2.png)";
+	const std::string PAGRstages[] = { R"(stage.png)" ,R"(stage2.png)", R"(stage3.png)"};
+	int GRstages[3];
+	constexpr size_t NUMstage = 3;//ステージグラフィックの数
 
 	const std::string PAGRchara = R"(graphs\chara.png)", PAGRbullet = R"(graphs\bullet.png)", PAGRtarget = R"(graphs\target.png)", PAGRbomb = R"(graphs\bomb.png)", PAGRblock = R"(graphs\block.png)", PAGRcursor = R"(graphs\cursor.png)", PAGRgoal = R"(graphs\goal.png)";
 	int GRchara, GRbullet, GRtarget, GRbomb, GRblock, GRcursor, GRgoal;
@@ -25,9 +26,6 @@ namespace sample {
 	const std::string PAMOVending = R"(movies\ending.mp4)";
 
 	btRigidBody* rigidChara;
-
-	int GRstage;
-	int GRstage2;
 
 	//的関係
 	std::vector<btRigidBody*> targets;
@@ -44,7 +42,7 @@ namespace sample {
 
 	//GOAL関係
 	btRigidBody* rigidGoal;
-	constexpr float goalX = 1380, goalY = 300;
+	constexpr float goalX = 1895, goalY = 440;
 };
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -71,12 +69,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		sample::rigidChara->activate();
 
 		general::CheckKey();
-		DrawGraph(0-sample::screenX, 0, sample::GRstage,true);
-		DrawGraph(sample::winW - sample::screenX, 0, sample::GRstage2, true);
+		for (size_t i = 0; i < sample::NUMstage; i++)
+			DrawGraph(i*sample::winW - sample::screenX, 0, sample::GRstages[i], true);
+
 
 		general::DrawTarget();
 		general::DrawBlocks();
-		DrawGraph(ball.x() - sample::screenX - 10, sample::winH - ball.y() - 10, sample::GRchara, true);
+		DrawGraph(ball.x() - sample::screenX - 15, sample::winH - ball.y() - 15, sample::GRchara, true);
 		general::CheckBullets();//弾丸を設定
 		general::CheckBombs();//ボムも
 		if (general::CheckGoal())break;//ゴールしているかチェック　描画もここで行う
@@ -147,8 +146,9 @@ __int8 general::Init() {
 
 
 	//画像も読み込み
-	sample::GRstage = LoadGraph(sample::PAGRstage.c_str());
-	sample::GRstage2 = LoadGraph(sample::PAGRstage2.c_str());
+	for (size_t i = 0; i < sample::NUMstage; i++)
+		sample::GRstages[i] = LoadGraph(sample::PAGRstages[i].c_str());
+
 	sample::GRchara = LoadGraph(sample::PAGRchara.c_str());
 	sample::GRbullet = LoadGraph(sample::PAGRbullet.c_str());
 	sample::GRtarget = LoadGraph(sample::PAGRtarget.c_str());
@@ -248,7 +248,7 @@ __int8 general::CheckBullets() {
 }
 __int8 general::CreateTarget() {
 
-	std::vector<btVector3> poses = { btVector3(600,300,0),btVector3(400,300,0),btVector3(700,300,0),btVector3(1200,300,0) };
+	std::vector<btVector3> poses = {btVector3(200,100,0),btVector3(470,300,0),btVector3(580,150,0),btVector3(1000,200,0),btVector3(1250,150,0),btVector3(1400,230,0),btVector3(1630,250,0) };
 
 	for (auto i : poses) {
 
@@ -268,8 +268,10 @@ __int8 general::CreateTarget() {
 	return true;
 }
 __int8 general::CreateBlocks() {
-	std::vector<btVector3> poses = { btVector3(300,250,0),btVector3(500,250,0),btVector3(500,300,0),btVector3(300,300,0),btVector3(300,350,0),btVector3(500,350,0),btVector3(500,400,0),
-	btVector3(900,300,0),btVector3(900,350,0) ,btVector3(900,400,0) ,btVector3(900,450,0) ,btVector3(1200,150,0),btVector3(1200,350,0) ,btVector3(1200,200,0) ,btVector3(1200,250,0),btVector3(1200,300,0),btVector3(1200,350,0) };
+	std::vector<btVector3> poses = {btVector3(150,170,0),btVector3(200,220,0),btVector3(250,270,0),
+	btVector3(700,170,0),btVector3(700,220,0) ,btVector3(700,270,0) ,btVector3(700,320,0),btVector3(880,200,0),btVector3(880,250,0),btVector3(880,300,0),btVector3(930,300,0),btVector3(980,300,0),
+		btVector3(1200,260,0),btVector3(1200,310,0),btVector3(1200,360,0),
+		btVector3(1700,310,0),btVector3(1650,360,0),btVector3(1600,410,0),btVector3(1550,410,0) };
 
 	for (auto i : poses) {
 
